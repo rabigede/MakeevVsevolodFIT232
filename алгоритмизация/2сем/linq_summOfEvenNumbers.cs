@@ -1,24 +1,66 @@
 ﻿using System;
 using System.Linq;
 
-namespace SumOfDigitsEven
+class Auto
 {
-    class Program
+    public bool isWashed = false;
+    public string brand;
+
+    public Auto(string brand)
     {
-        static void Main(string[] args)
+        this.isWashed = false;
+        this.brand = brand;
+    }
+}
+
+class Garage
+{
+    public Auto[] autos = new Auto[] { };
+
+    public Garage(Auto[] autos)
+    {
+        this.autos = autos;
+    }
+}
+
+class CarWash
+{
+    public static void Wash(Auto automobile)
+    {
+        automobile.isWashed = true;
+    }
+}
+
+class Delegates
+{
+    public delegate void CarFunction(Auto automobile);
+
+    public static void Main(string[] args)
+    {
+        CarFunction wash = CarWash.Wash;
+
+        Garage garage = new Garage(new Auto[] {
+        new Auto("Машина №1"),
+        new Auto("Машина №2"),
+        new Auto("Машина №3")
+      });
+
+        foreach (var auto in garage.autos)
         {
-            int[] numbers = { 222, 54, 78, 101, 1245, 1474, 427, 7852, 0 };
-
-            var numbersWithEvenSumOfDigits = from n in numbers
-                                             where n.ToString().Sum(c => int.Parse(c.ToString())) % 2 == 0
-                                             select n;
-
-            Console.WriteLine("Элементы с чётной суммой цифр:");
-            foreach (int n in numbersWithEvenSumOfDigits)
-            {
-                Console.WriteLine(n);
-            }
-            Console.ReadKey();
+            Console.WriteLine($"{auto.brand}: Чистая ли машина: {auto.isWashed}");
         }
+
+        Console.WriteLine("\n*Ведётся процесс помывки машин*\n");
+
+        foreach (var auto in garage.autos)
+        {
+            wash(auto);
+        }
+
+        foreach (var auto in garage.autos)
+        {
+            Console.WriteLine($"{auto.brand}: Чистая ли машина: {auto.isWashed}");
+        }
+        Console.ReadKey();
     }
 }
